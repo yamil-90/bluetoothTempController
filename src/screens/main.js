@@ -1,28 +1,38 @@
-import React, { useState } from 'react';
-import { StatusBar } from 'react-native';
-import { StyleSheet, View } from 'react-native';
-import BluetoothScanner from '../components/BluetoothScanner';
-import Temperature from '../components/Temperature';
+import React from 'react';
+import { Text } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-export default function App() {
-  const [temperature, setTemperature] = useState(0);
+import Home from './Home';
+import Contact from './Contact';
 
+const Stack = createNativeStackNavigator();
+
+const App = ()=>{
   return (
-    <View style={styles.container}>
-      <BluetoothScanner
-        temperature={temperature}
-        setTemperature={setTemperature} />
-      <Temperature
-        temperature={temperature}
-        setTemperature={setTemperature} />
-    </View>
-  );
+    <GestureHandlerRootView style={{flex:1}}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home" screenOptions={{
+            headerShown: false
+          }}>
+          <Stack.Screen
+          name={"Home"}
+          component={Home}
+          screenOptions={{
+            headerShown: false
+          }}
+
+          />
+          <Stack.Screen
+          name={"Contacto"}
+          component={Contact}
+
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
-});
+export default App;

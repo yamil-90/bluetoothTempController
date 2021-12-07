@@ -102,7 +102,7 @@ export default function BluetoothScanner(){
                     return
                   }
                   // found a bluetooth device
-                  if (device.name) {
+                  // if (device.name) {
                     setIsVisible(true)
 
                     // console.log(`${device.name} (${device.id})}`);
@@ -110,7 +110,7 @@ export default function BluetoothScanner(){
                     newScannedDevices[device.id] = device;
                     await setDeviceCount(Object.keys(newScannedDevices).length);
                     await setScannedDevices(scannedDevices);
-                  }
+                  // }
               });
             }
             return (true);

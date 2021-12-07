@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import ModalTemperature from './ModalTemperature'
 
 export default function Temperature(props) {
@@ -63,9 +64,10 @@ export default function Temperature(props) {
       </View>
 
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(1)}><Text style={styles.text}>1</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(2)}><Text style={styles.text}>2</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(3)}><Text style={styles.text}>3</Text></TouchableOpacity>
+
+        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(7)}><Text style={styles.text}>7</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(8)}><Text style={styles.text}>8</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(9)}><Text style={styles.text}>9</Text></TouchableOpacity>
       </View>
       <View style={styles.buttons}>
         <TouchableOpacity style={styles.red_TouchableOpacity} onPress={() => changeTemperature(4)}><Text style={styles.text}>4</Text></TouchableOpacity>
@@ -74,15 +76,14 @@ export default function Temperature(props) {
 
       </View>
       <View style={styles.buttons}>
-
-        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(7)}><Text style={styles.text}>7</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(8)}><Text style={styles.text}>8</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(9)}><Text style={styles.text}>9</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(1)}><Text style={styles.text}>1</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(2)}><Text style={styles.text}>2</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(3)}><Text style={styles.text}>3</Text></TouchableOpacity>
       </View>
       <View style={styles.buttons}>
         <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature('.')}><Text style={styles.text}>.</Text></TouchableOpacity>
         <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(0)}><Text style={styles.text}>0</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => enterTemperature()}><Text style={styles.text}>enter</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => enterTemperature()}><Icon style={styles.text} name="subdirectory-arrow-left"/></TouchableOpacity>
       </View>
     </View>
   )

@@ -11,22 +11,22 @@ export default function ModalBluetooth(props) {
     setDeviceCount(0)
     setIsVisible(false)
   }
-  const connectDevice = (device) => {
-    
-    device.connect()
-      .then((device) => {
-        return device.discoverAllServicesAndCharacteristics()
-      })
-      .then((device) => {
-        console.log(device)
-        console.log('yeeees')
-      })
-      .catch((error) => {
-        // Handle errors
-        console.log(error)
-        device.cancelConnection()
-        console.log('disconected')
-      });
+  const connectDevice = async(device) => {
+    console.log(device)
+    // await device.connect()
+    //   .then((device) => {
+    //     return device.discoverAllServicesAndCharacteristics()
+    //   })
+    //   .then((device) => {
+    //     // console.log(device)
+    //     console.log('yeeees')
+    //   })
+    //   .catch((error) => {
+    //     // Handle errors
+    //     console.log(error)
+    //     device.cancelConnection()
+    //     console.log('disconected')
+    //   });
     Alert.alert(device.name, `id: ${device.id}, nombre: ${device.name}, readable: ${device.isReadable}`)
   }
 
@@ -51,9 +51,12 @@ export default function ModalBluetooth(props) {
           return (
             <>
             <TouchableOpacity onPress={() => connectDevice(item)} style={styles.btn}>
-              <Text style={styles.text}>{`${item.name}(${item.isConnectable})`}</Text>
+              <Text style={styles.text}>{`${item.name}(${item.isConnectable}) local name: ${item.localName} id: ${item.id}`}</Text>
+              {item.id=='00:25:DB:74:5D:B8'? <Text>este</Text>: null}
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btn} onPress={()=>console.log(item.isConnected())} ><Text>desconectar</Text></TouchableOpacity>
+            {item.isConnected()._U ?
+            <TouchableOpacity style={styles.btn} onPress={()=>console.log(item.isConnected()._U)} ><Text>desconectar</Text></TouchableOpacity>
+            : null}
             </>
             )
         }}
