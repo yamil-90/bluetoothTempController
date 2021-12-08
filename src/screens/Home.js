@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { StyleSheet, View } from 'react-native';
+
 import BluetoothScanner from '../components/BluetoothScanner';
+import Options from '../components/Options';
 import Temperature from '../components/Temperature';
 
 const Home = ({ navigation }) => {
@@ -9,9 +11,14 @@ const Home = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+        {/* <Options
+         temperature={temperature}
+         setTemperature={setTemperature}
+        /> */}
       <BluetoothScanner
         temperature={temperature}
-        setTemperature={setTemperature} />
+        setTemperature={setTemperature}
+        navigation={navigation} />
       <Temperature
         temperature={temperature}
         setTemperature={setTemperature} />

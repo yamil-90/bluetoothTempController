@@ -14,20 +14,23 @@ const App = ()=>{
     <GestureHandlerRootView style={{flex:1}}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home" screenOptions={{
-            headerShown: false
           }}>
           <Stack.Screen
           name={"Home"}
           component={Home}
-          screenOptions={{
-            headerShown: false
+          options={{
+            headerShown: false,
           }}
 
           />
           <Stack.Screen
           name={"Contacto"}
           component={Contact}
-
+          
+          options={{
+            headerShown: true,
+            title: 'Contacto'
+          }}
           />
         </Stack.Navigator>
       </NavigationContainer>

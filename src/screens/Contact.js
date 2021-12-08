@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 const Contact = ({navigation})=>{
     return (
-        <Text>contact</Text>
+        <Text>contacto screen</Text>
     )
 }
 export default Contact;

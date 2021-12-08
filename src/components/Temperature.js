@@ -32,15 +32,15 @@ export default function Temperature(props) {
     setTemperature(temperature + value)
   }
   const setToTemperature = (value) => {
-    if (newTemperature !== null) {
+    if (newTemperature !== null && typeof(+temperature)!=='number') {
       setNewTemperature(value)
     }
   }
   const enterTemperature = () => {
-    if (newTemperature !== null) {
-      setTemperature(newTemperature)
+    if (newTemperature !== null && typeof(newTemperature)=='number') {
+      setTemperature(+newTemperature)
       setNewTemperature(null)
-    }
+    }else setNewTemperature(null)
   }
   return (
     <View style={styles.view}>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   view: {
     position: 'absolute',
     flex: 1,
-    top: 200,
+    top: 100,
     alignItems: 'center',
 
     justifyContent: 'flex-end',
