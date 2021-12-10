@@ -1,33 +1,56 @@
 import React, { useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Overlay } from 'react-native-elements';
+import Loading from './utils/Loading';
 
 export default function ModalBluetooth(props) {
-  const { logData, logCount, deviceCount, setDeviceCount, scannedDevices, setScannedDevices, isVisible, setIsVisible, manager } = props
+  const { 
+    logData,
+    logCount,
+    deviceCount,
+    setDeviceCount,
+    scannedDevices,
+    setScannedDevices,
+    isVisible,
+    setIsVisible,
+    manager,
+    isConnected,
+    setIsConnected,
+    loading,
+    setLoading
+  } = props
 
   const closeModal = () => {
     manager.stopDeviceScan()
     setScannedDevices({})
     setDeviceCount(0)
-    setIsVisible(false)
+    setIsVisible(false);
+    setLoading(false)
   }
-  const connectDevice = async(device) => {
-    console.log(device)
-    // await device.connect()
-    //   .then((device) => {
-    //     return device.discoverAllServicesAndCharacteristics()
-    //   })
-    //   .then((device) => {
-    //     // console.log(device)
-    //     console.log('yeeees')
-    //   })
-    //   .catch((error) => {
-    //     // Handle errors
-    //     console.log(error)
-    //     device.cancelConnection()
-    //     console.log('disconected')
-    //   });
-    Alert.alert(device.name, `id: ${device.id}, nombre: ${device.name}, readable: ${device.isReadable}`)
+  const connectDevice = async (device) => {
+    // console.log(device)
+
+    manager.cancelDeviceConnection(device.id);
+    setLoading(true);
+    await device.connect()
+      .then((device) => {
+        return device.discoverAllServicesAndCharacteristics()
+      })
+      .then((device) => {
+        // console.log(device)
+        console.log('yeeees')
+        setLoading(false)
+        setIsConnected(true)
+        Alert.alert(device.name ? device.name : 'NO NAME', `id: ${device.id}, nombre: ${device.name}, readable: ${device.isReadable} El dispositivo esta conectado`)
+      })
+      .catch((error) => {
+        // Handle errors
+        console.log(error)
+        device.cancelConnection()
+        console.log('disconected')
+        setLoading(false)
+        Alert.alert('no se pudo conectar al dispositivo')
+      });
   }
 
   return (
@@ -44,21 +67,24 @@ export default function ModalBluetooth(props) {
             return (<Text>{item}</Text>)
           }}
         /> */}
-      <Text style={{ fontWeight: "bold" }}>Dispositivos Escaneados({deviceCount})</Text>
+      <Text style={{ fontWeight: "bold" }}>Dispositivos Escaneados({deviceCount}) {loading?'loading': 'not loading'}</Text>
       <FlatList
         data={Object.values(scannedDevices)}
         renderItem={({ item }) => {
           return (
             <>
-            <TouchableOpacity onPress={() => connectDevice(item)} style={styles.btn}>
-              <Text style={styles.text}>{`${item.name}(${item.isConnectable}) local name: ${item.localName} id: ${item.id}`}</Text>
-              {item.id=='00:25:DB:74:5D:B8'? <Text>este</Text>: null}
-            </TouchableOpacity>
-            {item.isConnected()._U ?
-            <TouchableOpacity style={styles.btn} onPress={()=>console.log(item.isConnected()._U)} ><Text>desconectar</Text></TouchableOpacity>
-            : null}
+            {/* <Loading
+              loading={loading}
+              setLoading={setLoading}
+            /> */}
+              <TouchableOpacity onPress={() => connectDevice(item)} style={styles.btn}>
+                <Text style={styles.text}>{`${item.name ? item.name : 'NO NAME'}(${item.isConnectable}) local name: ${item.localName} id: ${item.id}`}</Text>
+              </TouchableOpacity>
+              {item.isConnected()._U ?
+                <TouchableOpacity style={styles.btn} onPress={() => console.log(item.isConnected()._U)} ><Text>desconectar</Text></TouchableOpacity>
+                : null}
             </>
-            )
+          )
         }}
       />
     </Overlay>

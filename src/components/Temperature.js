@@ -6,8 +6,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Temperature(props) {
   const { temperature, setTemperature } = props;
-  const [newTemperature, setNewTemperature] = useState(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const [newTemperature, setNewTemperature] = useState(null);
+
+  
 
   const changeTemperature = (value) => {
     if (newTemperature !== null) {
@@ -32,15 +33,15 @@ export default function Temperature(props) {
     setTemperature(temperature + value)
   }
   const setToTemperature = (value) => {
-    if (newTemperature !== null && typeof(+temperature)!=='number') {
+    if (newTemperature !== null && typeof (+temperature) !== 'number') {
       setNewTemperature(value)
     }
   }
   const enterTemperature = () => {
-    if (newTemperature !== null && typeof(newTemperature)=='number') {
+    if (newTemperature !== null && typeof (newTemperature) == 'number') {
       setTemperature(+newTemperature)
       setNewTemperature(null)
-    }else setNewTemperature(null)
+    } else setNewTemperature(null)
   }
   return (
     <View style={styles.view}>
@@ -54,8 +55,21 @@ export default function Temperature(props) {
           setTemperature={setTemperature}
         /> */}
 
-          {newTemperature !== null ? <Text style={styles.newTemperature_text}>{newTemperature}</Text> : <Text style={styles.newTemperature_text}>--</Text>}
-          {temperature !== null ? <Text style={styles.temperature_text}>{temperature.toFixed(1)} ºC</Text> : <Text style={styles.temperature_text}>--</Text>}
+          {newTemperature !== null ?
+            <Text style={styles.newTemperature_text}>{newTemperature}</Text> :
+            <Text style={styles.newTemperature_text}>--</Text>}
+          <View style={styles.main_temp}>
+            {temperature !== null ?
+              <View style={styles.units}>
+                <Text style={styles.temperature_text}>
+                  {temperature.toFixed(1)}
+                </Text>
+                <Text style={styles.units_text}> ºC</Text>
+              </View>
+              :
+              <Text style={styles.temperature_text}>--</Text>}
+
+          </View>
         </View>
         <View style={styles.side_buttons}>
           <TouchableOpacity style={styles.side_triangle_up} onPress={() => changeByOne(+1)}><Text style={styles.text}>+</Text></TouchableOpacity>
@@ -83,7 +97,7 @@ export default function Temperature(props) {
       <View style={styles.buttons}>
         <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature('.')}><Text style={styles.text}>.</Text></TouchableOpacity>
         <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(0)}><Text style={styles.text}>0</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => enterTemperature()}><Icon style={styles.text} name="subdirectory-arrow-left"/></TouchableOpacity>
+        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => enterTemperature()}><Icon style={styles.text} name="subdirectory-arrow-left" /></TouchableOpacity>
       </View>
     </View>
   )
@@ -95,7 +109,7 @@ const styles = StyleSheet.create({
     flex: 1,
     top: 100,
     alignItems: 'center',
-
+    width: '100%',
     justifyContent: 'flex-end',
   },
   temperature: {
@@ -104,6 +118,9 @@ const styles = StyleSheet.create({
 
   },
   temperature_container: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    width: '100%',
     flexDirection: 'row'
 
   },
@@ -138,22 +155,27 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   temperature_text: {
-    fontSize: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    fontSize: 60,
   },
-  newTemperature_text:{
-    alignItems:'flex-end',
-    alignSelf:'flex-end',
-    justifyContent:'flex-end',
-    fontSize:20
+  newTemperature_text: {
+    alignItems: 'flex-start',
+    alignSelf: 'flex-end',
+    justifyContent: 'flex-end',
+    fontSize: 20
+  },
+  main_temp: {
   },
   units: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start'
+    flexDirection:'row'
+  },
+  units_text: {
+
+    fontSize: 20,
   },
   side_buttons: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    position: 'absolute',
+    right: 10
   },
   side_triangle_up: {
     width: 0,

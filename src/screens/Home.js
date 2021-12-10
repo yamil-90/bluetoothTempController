@@ -1,24 +1,31 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, Text } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 
 import BluetoothScanner from '../components/BluetoothScanner';
-import Options from '../components/Options';
 import Temperature from '../components/Temperature';
+import Loading from '../components/utils/Loading';
 
 const Home = ({ navigation }) => {
-  const [temperature, setTemperature] = useState(0);
+  const [temperature, setTemperature] = useState(null);
+ const [isConnected, setIsConnected] = useState(false);
 
+ const [loading, setLoading] = useState(false)
   return (
     <View style={styles.container}>
-        {/* <Options
-         temperature={temperature}
-         setTemperature={setTemperature}
-        /> */}
+        {isConnected? <Text>conectado</Text> : <Text>no conectado</Text>}
+        <Loading
+          loading={loading}
+        />
       <BluetoothScanner
         temperature={temperature}
         setTemperature={setTemperature}
-        navigation={navigation} />
+        navigation={navigation}
+        isConnected={isConnected}
+        setIsConnected={setIsConnected}
+        loading={loading}
+        setLoading={setLoading}
+        />
       <Temperature
         temperature={temperature}
         setTemperature={setTemperature} />
