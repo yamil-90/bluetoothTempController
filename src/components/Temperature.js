@@ -5,10 +5,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import ModalTemperature from './ModalTemperature'
 
 export default function Temperature(props) {
-  const { temperature, setTemperature } = props;
+  const { temperature, setTemperature, isConnected, setIsConnected } = props;
   const [newTemperature, setNewTemperature] = useState(null);
 
-  
+
 
   const changeTemperature = (value) => {
     if (newTemperature !== null) {
@@ -30,7 +30,9 @@ export default function Temperature(props) {
     }
   }
   const changeByOne = (value) => {
-    setTemperature(temperature + value)
+    if (isConnected) {
+      setTemperature(temperature + value)
+    }
   }
   const setToTemperature = (value) => {
     if (newTemperature !== null && typeof (+temperature) !== 'number') {
@@ -38,23 +40,15 @@ export default function Temperature(props) {
     }
   }
   const enterTemperature = () => {
-    if (newTemperature !== null && typeof (newTemperature) == 'number') {
+    if (newTemperature !== null && typeof (newTemperature) == 'number' && isConnected) {
       setTemperature(+newTemperature)
       setNewTemperature(null)
     } else setNewTemperature(null)
   }
   return (
     <View style={styles.view}>
-      {/* <Text>Temperatura</Text> */}
       <View style={styles.temperature_container}>
         <View style={styles.temperature}>
-          {/* <ModalTemperature
-          isVisible={isVisible}
-          setIsVisible={setIsVisible}
-          temperature={temperature}
-          setTemperature={setTemperature}
-        /> */}
-
           {newTemperature !== null ?
             <Text style={styles.newTemperature_text}>{newTemperature}</Text> :
             <Text style={styles.newTemperature_text}>--</Text>}
@@ -95,9 +89,9 @@ export default function Temperature(props) {
         <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(3)}><Text style={styles.text}>3</Text></TouchableOpacity>
       </View>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature('.')}><Text style={styles.text}>.</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => changeTemperature(0)}><Text style={styles.text}>0</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.blue_TouchableOpacity} onPress={() => enterTemperature()}><Icon style={styles.text} name="subdirectory-arrow-left" /></TouchableOpacity>
+        <TouchableOpacity style={styles.red_TouchableOpacity} onPress={() => changeTemperature('.')}><Text style={styles.text}>.</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.red_TouchableOpacity} onPress={() => changeTemperature(0)}><Text style={styles.text}>0</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.red_TouchableOpacity} onPress={() => enterTemperature()}><Icon style={styles.text} name="subdirectory-arrow-left" /></TouchableOpacity>
       </View>
     </View>
   )
@@ -166,7 +160,7 @@ const styles = StyleSheet.create({
   main_temp: {
   },
   units: {
-    flexDirection:'row'
+    flexDirection: 'row'
   },
   units_text: {
 

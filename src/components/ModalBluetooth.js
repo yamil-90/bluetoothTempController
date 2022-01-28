@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Overlay } from 'react-native-elements';
 import Loading from './utils/Loading';
@@ -17,7 +17,8 @@ export default function ModalBluetooth(props) {
     isConnected,
     setIsConnected,
     loading,
-    setLoading
+    setLoading,
+    setDevice
   } = props
 
   const closeModal = () => {
@@ -38,9 +39,9 @@ export default function ModalBluetooth(props) {
       })
       .then((device) => {
         // console.log(device)
-        console.log('yeeees')
         setLoading(false)
         setIsConnected(true)
+        setDevice(device)
         Alert.alert(device.name ? device.name : 'NO NAME', `id: ${device.id}, nombre: ${device.name}, readable: ${device.isReadable} El dispositivo esta conectado`)
       })
       .catch((error) => {
@@ -59,27 +60,17 @@ export default function ModalBluetooth(props) {
       overlayStyle={styles.overlay}
       onBackdropPress={closeModal}
     >
-      {/* <Text style={{fontWeight: "bold"}}>Bluetooth Log ({logCount})</Text>
-
-            <FlatList
-          data={logData}
-          renderItem={({item}) => {
-            return (<Text>{item}</Text>)
-          }}
-        /> */}
-      <Text style={{ fontWeight: "bold" }}>Dispositivos Escaneados({deviceCount}) {loading?'loading': 'not loading'}</Text>
+      <Text style={{ fontWeight: "bold" }}>Dispositivos Escaneados({deviceCount}) </Text>
       <FlatList
         data={Object.values(scannedDevices)}
         renderItem={({ item }) => {
           return (
             <>
-            {/* <Loading
-              loading={loading}
-              setLoading={setLoading}
-            /> */}
               <TouchableOpacity onPress={() => connectDevice(item)} style={styles.btn}>
                 <Text style={styles.text}>{`${item.name ? item.name : 'NO NAME'}(${item.isConnectable}) local name: ${item.localName} id: ${item.id}`}</Text>
               </TouchableOpacity>
+
+              {/* not sure this works */}
               {item.isConnected()._U ?
                 <TouchableOpacity style={styles.btn} onPress={() => console.log(item.isConnected()._U)} ><Text>desconectar</Text></TouchableOpacity>
                 : null}

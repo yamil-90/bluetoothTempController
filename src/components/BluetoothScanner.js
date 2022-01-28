@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, PermissionsAndroid, StyleSheet, TouchableOpacity } from 'react-native';
-import { BleManager } from 'react-native-ble-plx';
+import { View, PermissionsAndroid, StyleSheet } from 'react-native';
+import { manager } from '../screens/Home';
 import ModalBluetooth from './ModalBluetooth';
 import Options from './Options';
 
@@ -11,7 +11,7 @@ const MoreIcon = require('../../resources/android-three-dots-icon-9.jpg')
 // - access/enable bluetooth module
 // - scan bluetooth devices in the area
 // - list the scanned devices
-export const manager = new BleManager();
+
 
 
 const requestPermission = async () => {
@@ -44,14 +44,26 @@ const activateBluetooth = async () => {
 }
 
 
-export default function BluetoothScanner(props, { navigation }) {
+export default function BluetoothScanner(props) {
   const [logData, setLogData] = useState([]);
   const [logCount, setLogCount] = useState(0);
   const [scannedDevices, setScannedDevices] = useState({});
   const [deviceCount, setDeviceCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const { isConnected, setIsConnected, loading, setLoading } = props;
-  
+  const { isConnected, setIsConnected, loading, setLoading, navigation, setDevice } = props;
+
+  useEffect(() => {
+    manager.onStateChange(async (state) => {
+      const subscription = manager.onStateChange((state) => {
+        const newLogData = logData;
+        newLogData.push(state);
+        setLogCount(newLogData.length);
+        setLogData(newLogData);
+        subscription.remove();
+      }, true);
+      return () => subscription.remove();
+    });
+  }, [manager]);
 
   const scanDevices = async () => {
     // setIsVisible(true) //TODO sacar esto para el deploy
@@ -69,7 +81,7 @@ export default function BluetoothScanner(props, { navigation }) {
     if (permission) {
       setIsVisible(true);
       setLoading(false)
-      manager.startDeviceScan(null, null, async (error, device) => {
+      manager.startDeviceScan(null, null, (error, device) => {
         // error handling
         if (error) {
 
@@ -77,14 +89,14 @@ export default function BluetoothScanner(props, { navigation }) {
           return;
         }
         // found a bluetooth device
-        // if (device.name) {
+        if (device.name) {
 
-        // console.log(`${device.name} (${device.id})}`);
-        const newScannedDevices = scannedDevices;
-        newScannedDevices[device.id] = device;
-        await setDeviceCount(Object.keys(newScannedDevices).length);
-        await setScannedDevices(scannedDevices);
-        // }
+          // console.log(`${device.name} (${device.id})}`);
+          const newScannedDevices = scannedDevices;
+          newScannedDevices[device.id] = device;
+          setDeviceCount(Object.keys(newScannedDevices).length);
+          setScannedDevices(scannedDevices);
+        }
       });
     }
     return (true);
@@ -94,19 +106,6 @@ export default function BluetoothScanner(props, { navigation }) {
   }
 
 
-  useEffect(() => {
-    manager.onStateChange((state) => {
-      const subscription = manager.onStateChange(async (state) => {
-        // console.log(state);
-        const newLogData = logData;
-        newLogData.push(state);
-        await setLogCount(newLogData.length);
-        await setLogData(newLogData);
-        subscription.remove();
-      }, true);
-      return () => subscription.remove();
-    });
-  }, [manager]);
 
   return (
     <View style={styles.view}>
@@ -119,6 +118,7 @@ export default function BluetoothScanner(props, { navigation }) {
           actions={[activateBluetooth, scanDevices, navigateTo]} />
       </View>
       <ModalBluetooth
+        setDevice={setDevice}
         manager={manager}
         isVisible={isVisible}
         setIsVisible={setIsVisible}
