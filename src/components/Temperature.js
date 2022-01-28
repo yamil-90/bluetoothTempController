@@ -5,8 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import ModalTemperature from './ModalTemperature'
 
 export default function Temperature(props) {
-  const { temperature, setTemperature, isConnected, setIsConnected } = props;
-  const [newTemperature, setNewTemperature] = useState(null);
+  const { temperature, setTemperature, isConnected, setIsConnected, newTemperature, setNewTemperature } = props;
 
 
 
